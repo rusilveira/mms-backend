@@ -1,0 +1,45 @@
+MMS - Contrato oficial de envio de leituras do ESP32
+
+Endpoint:
+POST /api/readings
+
+Host local:
+http://IP_DO_PC:3000/api/readings
+
+Headers:
+Content-Type: application/json
+
+Payload JSON:
+{
+  "colmeia_id": "COL-01",
+  "temperaturaInterna": 31.4,
+  "umidadeInterna": 72,
+  "temperaturaExterna": 27.8,
+  "umidadeExterna": 68,
+  "peso": 5.42,
+  "bateria": 3.88,
+  "dataCompleta": "2026-04-04T20:30:00.000Z"
+}
+
+Descrição dos campos:
+- colmeia_id: identificador da colmeia
+- temperaturaInterna: temperatura interna em °C
+- umidadeInterna: umidade interna em %
+- temperaturaExterna: temperatura externa em °C
+- umidadeExterna: umidade externa em %
+- peso: peso da colmeia em kg
+- bateria: tensão da bateria em V
+- dataCompleta: data/hora da leitura em formato ISO 8601
+
+Resposta esperada em caso de sucesso:
+Status HTTP: 201
+{
+  "mensagem": "Leitura salva com sucesso.",
+  "id": 1
+}
+
+Resposta esperada em caso de erro:
+Status HTTP: 400
+{
+  "erro": "nome_do_campo inválido."
+}
