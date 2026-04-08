@@ -146,3 +146,14 @@ app.get("/api/status", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
+
+app.delete("/api/readings", (req, res) => {
+  db.run("DELETE FROM readings", [], function (err) {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ erro: "Erro ao apagar dados" });
+    }
+
+    res.json({ mensagem: "Todos os dados foram apagados" });
+  });
+});
