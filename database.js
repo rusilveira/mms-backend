@@ -23,6 +23,11 @@ db.serialize(() => {
       dataCompleta TEXT NOT NULL
     )
   `);
+
+  db.run(`ALTER TABLE readings ADD COLUMN temperatura_interna REAL`, () => {});
+  db.run(`ALTER TABLE readings ADD COLUMN umidade_interna REAL`, () => {});
+  db.run(`ALTER TABLE readings ADD COLUMN temperatura_externa REAL`, () => {});
+  db.run(`ALTER TABLE readings ADD COLUMN umidade_externa REAL`, () => {});
 });
 
 module.exports = db;
