@@ -44,6 +44,17 @@ This backend is responsible for:
 
 ---
 
+## License
+
+This project is protected under a custom license.
+
+It is provided for viewing and educational purposes only.  
+Unauthorized use, copying, modification, or distribution is strictly prohibited.
+
+See the LICENSE file for more details.
+
+---
+
 ## Getting Started
 
 ```bash
