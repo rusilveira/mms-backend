@@ -1,21 +1,21 @@
 # MMS Backend
 
-API REST do sistema MMS para recebimento, armazenamento e consulta de leituras ambientais coletadas por dispositivos ESP32.
+REST API for receiving, storing and retrieving environmental readings collected by ESP32-based devices.
 
 ---
 
-## Visão geral
+## Overview
 
-O backend é responsável por:
+This backend is responsible for:
 
-- receber leituras enviadas pelos dispositivos
-- armazenar os dados em banco SQLite
-- disponibilizar endpoints para consumo pelo dashboard web
-- permitir testes locais com simuladores
+- receiving sensor readings from devices
+- storing data in a SQLite database
+- providing endpoints for frontend consumption
+- enabling local testing through simulation scripts
 
 ---
 
-## Tecnologias utilizadas
+## Technologies
 
 - Node.js
 - Express
@@ -24,27 +24,27 @@ O backend é responsável por:
 
 ---
 
-## Estrutura do projeto
+## Project Structure
 
-- `server.js` → inicialização da API e rotas principais  
-- `database.js` → conexão e operações com o banco SQLite  
-- `simulador.js` → envio de leituras simuladas  
-- `simulador-cenarios.js` → simulação de cenários  
-- `contrato-api-esp32.txt` → referência de integração com ESP32  
-
----
-
-## Funcionalidades
-
-- recebimento de leituras via HTTP  
-- armazenamento persistente  
-- consulta de histórico  
-- suporte a filtros por período  
-- integração com ESP32 e dashboard  
+- `server.js` → API initialization and routes
+- `database.js` → database connection and queries
+- `simulador.js` → basic reading simulation
+- `simulador-cenarios.js` → scenario-based simulation
+- `contrato-api-esp32.txt` → ESP32 integration reference
 
 ---
 
-## Como executar localmente
+## Features
+
+- HTTP-based data ingestion
+- persistent data storage
+- historical data retrieval
+- period-based filtering
+- integration-ready with ESP32 and frontend dashboard
+
+---
+
+## Getting Started
 
 ```bash
 git clone https://github.com/rusilveira/mms-backend.git
@@ -52,5 +52,5 @@ cd mms-backend
 npm install
 node server.js
 ```
-
-Acesse: http://localhost:3000/
+Access the API at:
+http://localhost:3000
