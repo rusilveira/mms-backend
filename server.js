@@ -50,6 +50,7 @@ app.get("/api/readings", (req, res) => {
   id: item.id,
   colmeia_id: item.colmeia_id,
   hora: new Date(item.dataCompleta).toLocaleTimeString("pt-BR", {
+    timeZone: "America/Sao_Paulo",
     hour: "2-digit",
     minute: "2-digit",
   }),
