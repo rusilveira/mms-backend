@@ -1,33 +1,39 @@
-const sqlite3 = require("sqlite3").verbose();
-const path = require("path");
+const { Pool } = require("pg");
 
-const dbPath = path.resolve(__dirname, "mms.db");
+const connectionString = process.env.DATABASE_URL;
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error("Erro ao conectar ao banco:", err.message);
-  } else {
-    console.log("Banco SQLite conectado.");
-  }
+if (!connectionString) {
+  throw new Error("DATABASE_URL não definida.");
+}
+
+const pool = new Pool({
+  connectionString,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
-db.serialize(() => {
-  db.run(`
+async function initDatabase() {
+  await pool.query(`
     CREATE TABLE IF NOT EXISTS readings (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      id SERIAL PRIMARY KEY,
       colmeia_id TEXT NOT NULL,
       temperatura REAL NOT NULL,
       umidade REAL NOT NULL,
+      temperatura_interna REAL,
+      umidade_interna REAL,
+      temperatura_externa REAL,
+      umidade_externa REAL,
       peso REAL NOT NULL,
       bateria REAL NOT NULL,
-      dataCompleta TEXT NOT NULL
+      dataCompleta TIMESTAMPTZ NOT NULL
     )
   `);
 
-  db.run(`ALTER TABLE readings ADD COLUMN temperatura_interna REAL`, () => {});
-  db.run(`ALTER TABLE readings ADD COLUMN umidade_interna REAL`, () => {});
-  db.run(`ALTER TABLE readings ADD COLUMN temperatura_externa REAL`, () => {});
-  db.run(`ALTER TABLE readings ADD COLUMN umidade_externa REAL`, () => {});
-});
+  console.log("Banco PostgreSQL conectado e tabela verificada.");
+}
 
-module.exports = db;
+module.exports = {
+  pool,
+  initDatabase,
+};
