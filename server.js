@@ -20,23 +20,37 @@ app.get("/", (req, res) => {
 app.get("/api/readings", async (req, res) => {
   try {
     const period = req.query.period || "24h";
-
-    let limiteData = null;
-
-    if (period === "24h") {
-      limiteData = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-    } else if (period === "7d") {
-      limiteData = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-    } else if (period === "30d") {
-      limiteData = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    }
+    const { start, end } = req.query;
 
     let query = `SELECT * FROM readings`;
     const params = [];
+    const where = [];
 
-    if (limiteData) {
-      query += ` WHERE dataCompleta >= $1`;
-      params.push(limiteData);
+    if (start && end) {
+      params.push(`${start}T00:00:00-03:00`);
+      params.push(`${end}T23:59:59.999-03:00`);
+      where.push(`dataCompleta BETWEEN $1 AND $2`);
+    } else {
+      let limiteData = null;
+
+      if (period === "24h") {
+        limiteData = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      } else if (period === "7d") {
+        limiteData = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+      } else if (period === "30d") {
+        limiteData = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      } else if (period === "all") {
+        limiteData = null;
+      }
+
+      if (limiteData) {
+        params.push(limiteData);
+        where.push(`dataCompleta >= $1`);
+      }
+    }
+
+    if (where.length) {
+      query += ` WHERE ${where.join(" AND ")}`;
     }
 
     query += ` ORDER BY dataCompleta ASC`;

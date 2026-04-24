@@ -9,7 +9,7 @@ REST API for receiving, storing and retrieving environmental readings collected 
 This backend is responsible for:
 
 - receiving sensor readings from devices
-- storing data in a SQLite database
+- storing data in a relational database
 - providing endpoints for frontend consumption
 - enabling local testing through simulation scripts
 
@@ -19,7 +19,7 @@ This backend is responsible for:
 
 - Node.js
 - Express
-- SQLite
+- PostgreSQL
 - JavaScript
 
 ---
@@ -40,7 +40,41 @@ This backend is responsible for:
 - persistent data storage
 - historical data retrieval
 - period-based filtering
+- custom date range filtering
+- ESP32 timestamp support
 - integration-ready with ESP32 and frontend dashboard
+
+---
+
+## API Endpoints
+
+### Get readings
+
+```http
+GET /api/readings
+GET /api/readings?period=24h
+GET /api/readings?period=7d
+GET /api/readings?period=30d
+GET /api/readings?period=all
+GET /api/readings?start=2026-04-23&end=2026-04-23
+```
+
+## Create reading
+
+```http
+POST /api/readings
+```
+
+## API status
+
+```http
+GET /api/status
+```
+
+```bash
+npm version 1.0 --no-git-tag-version
+npm run start
+```
 
 ---
 
