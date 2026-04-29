@@ -1,4 +1,4 @@
-MMS - Contrato oficial de envio de leituras do ESP32
+APISENSE - Contrato oficial de envio de leituras do ESP32
 
 Endpoint:
 POST /api/readings
