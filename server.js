@@ -16,14 +16,14 @@ app.use((req, res, next) => {
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "ok",
-    service: "APISENSE Online",
+    service: "API HIVE+ Online",
     uptime: process.uptime(),
     timestamp: new Date().toISOString()
   });
 });
 
 app.get("/", (req, res) => {
-  res.send("API APISENSE online.");
+  res.send("API HIVE+ online.");
 });
 
 app.get("/api/readings", async (req, res) => {

@@ -1,5 +1,5 @@
 {
-  "name": "apisense-backend",
+  "name": "hive-plus-backend",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
