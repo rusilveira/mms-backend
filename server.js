@@ -20,37 +20,23 @@ app.get("/", (req, res) => {
 app.get("/api/readings", async (req, res) => {
   try {
     const period = req.query.period || "24h";
-    const { start, end } = req.query;
+
+    let limiteData = null;
+
+    if (period === "24h") {
+      limiteData = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    } else if (period === "7d") {
+      limiteData = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    } else if (period === "30d") {
+      limiteData = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    }
 
     let query = `SELECT * FROM readings`;
     const params = [];
-    const where = [];
 
-    if (start && end) {
-      params.push(`${start}T00:00:00-03:00`);
-      params.push(`${end}T23:59:59.999-03:00`);
-      where.push(`dataCompleta BETWEEN $1 AND $2`);
-    } else {
-      let limiteData = null;
-
-      if (period === "24h") {
-        limiteData = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      } else if (period === "7d") {
-        limiteData = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
-      } else if (period === "30d") {
-        limiteData = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-      } else if (period === "all") {
-        limiteData = null;
-      }
-
-      if (limiteData) {
-        params.push(limiteData);
-        where.push(`dataCompleta >= $1`);
-      }
-    }
-
-    if (where.length) {
-      query += ` WHERE ${where.join(" AND ")}`;
+    if (limiteData) {
+      query += ` WHERE dataCompleta >= $1`;
+      params.push(limiteData);
     }
 
     query += ` ORDER BY dataCompleta ASC`;
@@ -153,7 +139,7 @@ app.post("/api/readings", async (req, res) => {
 
     const timestamp = dataCompleta || new Date().toISOString();
 
-    await pool.query(
+    const result = await pool.query(
       `
       INSERT INTO readings (
         colmeia_id,
@@ -168,6 +154,7 @@ app.post("/api/readings", async (req, res) => {
         dataCompleta
       )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+      RETURNING id
       `,
       [
         colmeia_id,
@@ -181,10 +168,12 @@ app.post("/api/readings", async (req, res) => {
         bateriaNum,
         timestamp,
       ]
-);
+    );
 
-res.sendStatus(201);
-
+    res.status(201).json({
+      mensagem: "Leitura salva com sucesso.",
+      id: result.rows[0].id,
+    });
   } catch (err) {
     console.error("Erro ao salvar leitura:", err);
     res.status(500).json({ erro: "Erro ao salvar leitura." });
