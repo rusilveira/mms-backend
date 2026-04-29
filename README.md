@@ -26,23 +26,24 @@ This backend is responsible for:
 
 ## Project Structure
 
-- `server.js` → API initialization and routes
-- `database.js` → database connection and queries
+- `server.js` → Express API initialization and route handling
+- `database.js` → PostgreSQL connection and table initialization
 - `simulador.js` → basic reading simulation
 - `simulador-cenarios.js` → scenario-based simulation
-- `contrato-api-esp32.txt` → ESP32 integration reference
+- `contrato-api-esp32.txt` → ESP32/Gateway payload contract
 
 ---
 
 ## Features
 
-- HTTP-based data ingestion
-- persistent data storage
+- HTTP-based data ingestion from ESP32 gateway
+- low-latency POST response optimized for embedded communication
+- persistent PostgreSQL data storage
 - historical data retrieval
 - period-based filtering
 - custom date range filtering
 - ESP32 timestamp support
-- integration-ready with ESP32 and frontend dashboard
+- integration-ready with frontend monitoring dashboard
 
 ---
 
@@ -71,10 +72,11 @@ POST /api/readings
 GET /api/status
 ```
 
-```bash
-npm version 1.0 --no-git-tag-version
-npm run start
-```
+## Deployment
+
+This backend is currently deployed on Render and connected to a PostgreSQL cloud database.
+
+It is designed to receive real-time readings from the ESP32 LoRa Wi-Fi gateway and serve processed historical data to the monitoring dashboard.
 
 ---
 
