@@ -235,8 +235,6 @@ app.get("/api/status", async (req, res) => {
   }
 });
 
-// Recomendo remover esta rota em produção.
-// Se quiser manter, proteja com token/senha.
 app.delete("/api/readings", async (req, res) => {
   try {
     await pool.query("DELETE FROM readings");
