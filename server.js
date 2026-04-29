@@ -153,7 +153,7 @@ app.post("/api/readings", async (req, res) => {
 
     const timestamp = dataCompleta || new Date().toISOString();
 
-    const result = await pool.query(
+    await pool.query(
       `
       INSERT INTO readings (
         colmeia_id,
@@ -168,7 +168,6 @@ app.post("/api/readings", async (req, res) => {
         dataCompleta
       )
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-      RETURNING id
       `,
       [
         colmeia_id,
@@ -182,12 +181,10 @@ app.post("/api/readings", async (req, res) => {
         bateriaNum,
         timestamp,
       ]
-    );
+);
 
-    res.status(201).json({
-      mensagem: "Leitura salva com sucesso.",
-      id: result.rows[0].id,
-    });
+res.sendStatus(201);
+
   } catch (err) {
     console.error("Erro ao salvar leitura:", err);
     res.status(500).json({ erro: "Erro ao salvar leitura." });
