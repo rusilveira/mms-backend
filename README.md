@@ -2,6 +2,18 @@
 
 REST API for receiving, storing and retrieving environmental readings collected by ESP32-based devices.
 
+> Part of the **[Smart Beehive Monitoring System](https://github.com/rusilveira/rusilveira#smart-beehive-monitoring-system)**: [sensor node](https://github.com/rusilveira/esp32-beehive-sensor-node-lora) · [LoRa link](https://github.com/rusilveira/esp32-lora-reliable-link) · [gateway](https://github.com/rusilveira/esp32-beehive-lora-gateway) · **API** · [dashboard](https://github.com/rusilveira/mms-frontend)
+
+---
+
+## Problem
+
+Readings that arrive from the LoRa gateway need to be stored safely and served to the dashboard, filtered by period, without making the embedded device wait.
+
+## Solution
+
+A REST API in Node.js and Express backed by PostgreSQL. The gateway posts each reading and gets a fast response; the dashboard queries history by period or date range. Simulation scripts make it possible to test the whole flow without hardware.
+
 ---
 
 ## Overview
@@ -80,17 +92,6 @@ It is designed to receive real-time readings from the ESP32 LoRa Wi-Fi gateway a
 
 ---
 
-## License
-
-This project is protected under a custom license.
-
-It is provided for viewing and educational purposes only.  
-Unauthorized use, copying, modification, or distribution is strictly prohibited.
-
-See the LICENSE file for more details.
-
----
-
 ## Getting Started
 
 ```bash
@@ -101,3 +102,14 @@ node server.js
 ```
 Access the API at:
 http://localhost:3000
+
+---
+
+## Author
+
+**Ruan Silveira** · Industrial instrumentation technician and Electrical Engineering student  
+[GitHub](https://github.com/rusilveira) · [LinkedIn](https://www.linkedin.com/in/ruan-silveira-494110257)
+
+## License
+
+MIT. See [LICENSE](LICENSE).
